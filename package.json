@@ -1,0 +1,31 @@
+{
+  "name": "cf-doh",
+  "version": "1.0.0",
+  "description": "Typed Cloudflare DNS Over HTTP Resolver",
+  "main": "pkg/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "test": "npm run build"
+  },
+  "files": [
+    "pkg"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesseditson/cf-doh.git"
+  },
+  "keywords": [
+    "dns",
+    "dns-over-https",
+    "https",
+    "cloudflare",
+    "typescript"
+  ],
+  "author": "Jesse Ditson <jesse.ditson@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jesseditson/cf-doh/issues"
+  },
+  "homepage": "https://github.com/jesseditson/cf-doh#readme"
+}

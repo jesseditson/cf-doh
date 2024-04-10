@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "lib": ["ES2015", "WebWorker"],
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "pkg",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"]
+}
