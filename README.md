@@ -63,9 +63,13 @@ If cloudflare returns a non-200 response, this will throw.
 ```typescript
 import { queryDNSRecords, DOHStatus } from "cf-doh";
 
-const response = await queryDNS("_verification.jesseditson.com", "TXT");
+const response = await queryDNSRecords("_verification.jesseditson.com", "TXT");
 
 if (response.status === DOHStatus.NoError) {
-  const records = r.Answer.map((r) => r.data);
+  const records = r.Answer.map((r) => JSON.parse(r.data));
 }
 ```
+
+## Caveats and Notes
+
+Cloudflare returns quoted strings for standardized record types, and hex values for unknown record types. This means that for most records, the string you get back will include double quotes. `queryDNS` uses `JSON.parse()` to strip these quotes before returning them, so if you're using `queryDNSRecords` directly, you'll need to process these values to use them as strings.

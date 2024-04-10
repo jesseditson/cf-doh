@@ -218,7 +218,14 @@ export const queryDNS = async (
   if (r.Status !== DOHStatus.NoError) {
     throw new Error(DOHStatusMessage[r.Status]);
   }
-  return r.Answer.map((r) => r.data);
+  return r.Answer.map((r) => {
+    try {
+      // Text records are returned wrapped in quotes, parse them to strip the quotes
+      return JSON.parse(r.data);
+    } catch (e) {
+      return r.data;
+    }
+  });
 };
 
 let _fetchImpl: typeof fetch;
