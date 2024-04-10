@@ -11,7 +11,11 @@ This lib is a type safe resolver that uses cloudflare's DNS Over HTTP service to
 `npm --save install cf-doh`
 
 ```javascript
-import {}
+import { queryDNS } from "cf-doh";
+
+const records = await queryDNS("_verification.jesseditson.com", "TXT");
+
+records.forEach((r) => console.log(r));
 ```
 
 ## Usage in node.js
