@@ -141,7 +141,7 @@ export enum DNSRecordType {
   AXFR = 252, // transfer of an entire zone [RFC1035][RFC5936]
   MAILB = 253, // mailbox-related RRs (MB, MG or MR) [RFC1035]
   MAILA = 254, // mail agent RRs (OBSOLETE - see MX) [RFC1035]
-  "*" = 255, // A request for some or all records the server has available [RFC1035][RFC6895][RFC8482]
+  ANY = 255, // A request for some or all records the server has available [RFC1035][RFC6895][RFC8482]
   URI = 256, // URI [RFC7553] URI/uri-completed-template 2011-02-22
   CAA = 257, // Certification Authority Restriction [RFC8659] CAA/caa-completed-template 2011-04-07
   AVC = 258, // Application Visibility and Control [Wolfgang_Riedel] AVC/avc-completed-template 2016-02-26
