@@ -167,7 +167,7 @@ export type DOHResponse = {
     name: string; // The record name requested.
     type: DNSRecordType;
   }[];
-  Answer: {
+  Answer?: {
     name: string; // The record owner
     type: DNSRecordType;
     TTL: number; // The number of seconds the answer can be stored in cache before it is considered stale.
@@ -205,9 +205,23 @@ export const queryDNSRecords = async (
     }
   );
   if (!r.ok) {
-    throw new Error(`HoF request failed: [${r.status}] (${await r.text()})`);
+    let b = "[binary data]";
+    try {
+      b = await r.text();
+    } catch (e) {
+      b = `Failed parsing, ${e}`;
+    }
+    throw new Error(`DoH request failed: [${r.status}] (${b})`);
   }
-  return (await r.json()) as DOHResponse;
+  const response = await r.json();
+  if (typeof response.Status !== "number") {
+    throw new Error(
+      `Cloudflare returned and unexpected DoH response: ${JSON.stringify(
+        response
+      )}`
+    );
+  }
+  return response as DOHResponse;
 };
 
 export const queryDNS = async (
@@ -218,14 +232,16 @@ export const queryDNS = async (
   if (r.Status !== DOHStatus.NoError) {
     throw new Error(DOHStatusMessage[r.Status]);
   }
-  return r.Answer.map((r) => {
-    try {
-      // Text records are returned wrapped in quotes, parse them to strip the quotes
-      return JSON.parse(r.data);
-    } catch (e) {
-      return r.data;
-    }
-  });
+  return r.Answer
+    ? r.Answer.map((r) => {
+        try {
+          // Text records are returned wrapped in quotes, parse them to strip the quotes
+          return JSON.parse(r.data);
+        } catch (e) {
+          return r.data;
+        }
+      })
+    : [];
 };
 
 let _fetchImpl: typeof fetch;
