@@ -248,6 +248,8 @@ let _fetchImpl: typeof fetch;
 export const setFetch = (fetchImpl: typeof fetch) => {
   _fetchImpl = fetchImpl;
 };
-if (self && self.fetch) {
+if (typeof fetch !== "undefined") {
+  setFetch(fetch);
+} else if (typeof self !== "undefined" && self.fetch) {
   setFetch(fetch);
 }
