@@ -189,6 +189,15 @@ export type DOHResponse = {
   Comment?: string[]; // List of EDE messages.
 };
 
+export class DOHError {
+  response: DOHResponse
+  message: string
+  constructor(response: DOHResponse) {
+    this.response = response;
+    this.message = DOHStatusMessage[response.Status];
+  }
+}
+
 export const queryDNSRecords = async (
   hostname: string,
   recordType: DNSRecordType | keyof typeof DNSRecordType
@@ -230,7 +239,7 @@ export const queryDNS = async (
 ): Promise<string[]> => {
   const r = await queryDNSRecords(hostname, recordType);
   if (r.Status !== DOHStatus.NoError) {
-    throw new Error(DOHStatusMessage[r.Status]);
+    throw new DOHError(r);
   }
   return r.Answer
     ? r.Answer.map((r) => {
