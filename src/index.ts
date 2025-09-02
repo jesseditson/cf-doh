@@ -194,7 +194,10 @@ export class DOHError {
   message: string
   constructor(response: DOHResponse) {
     this.response = response;
-    this.message = DOHStatusMessage[response.Status];
+    this.message = `DNS Query Error: ${DOHStatusMessage[response.Status]}`;
+    if (response.Comment && response.Comment.length) {
+      this.message += `\n${response.Comment.join("\n")}`;
+    }
   }
 }
 
